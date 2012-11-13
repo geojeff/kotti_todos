@@ -1,0 +1,18 @@
+.todos-view .todoitem {
+    margin-top: 2em;
+}
+.topic-view h1,
+.todos-view .topic h2 {
+    border-top: 1px solid black;
+    margin-top: 0.75em;
+    padding-top: 0.5em;
+}
+.topic-view .todoitem {
+    margin-top: 2em;
+}
+.todoitem-view h1,
+.topic-view .todoitem h2 {
+    border-top: 1px solid black;
+    margin-top: 0.75em;
+    padding-top: 0.5em;
+}
