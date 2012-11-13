@@ -20,7 +20,7 @@ from kotti.views.edit import DocumentSchema
 
 from kotti_todos import todos_settings
 from kotti_todos.resources import Todos
-from kotti_todos.resources import Topic
+from kotti_todos.resources import Category
 from kotti_todos.resources import TodoItem
 from kotti_todos.static import kotti_todos_js
 from kotti_todos import _
@@ -43,7 +43,7 @@ class TodosSchema(DocumentSchema):
     pass
 
 
-class TopicSchema(DocumentSchema):
+class CategorySchema(DocumentSchema):
     pass
 
 
@@ -130,13 +130,13 @@ class EditTodosFormView(EditFormView):
             self.context.tags = appstruct['tags']
 
 
-class AddTopicFormView(AddFormView):
-    item_type = _(u"Topic")
-    item_class = Topic
+class AddCategoryFormView(AddFormView):
+    item_type = _(u"Category")
+    item_class = Category
 
     def schema_factory(self):
 
-        return TopicSchema()
+        return CategorySchema()
 
     def add(self, **appstruct):
 
@@ -149,11 +149,11 @@ class AddTopicFormView(AddFormView):
             )
 
 
-class EditTopicFormView(EditFormView):
+class EditCategoryFormView(EditFormView):
 
     def schema_factory(self):
 
-        return TopicSchema()
+        return CategorySchema()
 
     def edit(self, **appstruct):
 
@@ -192,12 +192,12 @@ class TodoItemView(BaseView):
         return {}
 
 
-@view_defaults(context=Topic,
+@view_defaults(context=Category,
                permission='view')
-class TopicView(BaseView):
+class CategoryView(BaseView):
 
     @view_config(
-             renderer="kotti_todos:templates/topic-view.pt")
+             renderer="kotti_todos:templates/category-view.pt")
     def view(self):
 
         session = DBSession()
@@ -234,8 +234,8 @@ class TodosView(BaseView):
 
         session = DBSession()
 
-        query = session.query(Topic).filter(
-                Topic.parent_id == self.context.id)
+        query = session.query(Category).filter(
+                Category.parent_id == self.context.id)
 
         items = query.all()
 
@@ -294,16 +294,16 @@ def includeme_edit(config):
         )
 
     config.add_view(
-        EditTopicFormView,
-        context=Topic,
+        EditCategoryFormView,
+        context=Category,
         name='edit',
         permission='edit',
         renderer='kotti:templates/edit/node.pt',
         )
 
     config.add_view(
-        AddTopicFormView,
-        name=Topic.type_info.add_view,
+        AddCategoryFormView,
+        name=Category.type_info.add_view,
         permission='add',
         renderer='kotti:templates/edit/node.pt',
         )

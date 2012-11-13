@@ -30,10 +30,10 @@ msgid "TodoItems"
 msgstr "TodoItems"
 
 #: kotti_todos/resources.py:26
-msgid "Topic"
-msgstr "Topic"
+msgid "Category"
+msgstr "Category"
 
 #: kotti_todos/templates/todos-view.pt:17
-msgid "Topics"
-msgstr "Topics"
+msgid "Categorys"
+msgstr "Categorys"
 

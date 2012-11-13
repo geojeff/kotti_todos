@@ -22,11 +22,11 @@ msgid "Todos"
 msgstr ""
 
 #: kotti_todos/resources.py:26
-msgid "Topic"
+msgid "Category"
 msgstr ""
 
 #: kotti_todos/templates/todos-view.pt:17
-msgid "Topics"
+msgid "Categorys"
 msgstr ""
 
 #: kotti_todos/resources.py:26

@@ -16,7 +16,7 @@ to the ``kotti.configurators`` setting in your ini file::
 
     kotti.configurators = kotti_todos.kotti_configure
 
-Now you can create a todos and add topics and todoitems.
+Now you can create a todos and add categorys and todoitems.
 
 There are different settings to adjust the behavior of the
 software.
@@ -60,7 +60,7 @@ Be warned: This addon is in alpha state. Use it at your own risk.
 Using kotti_todos
 ====================
 
-Add a todos to your site, then to that add topics, and to those, todoitems.
+Add a todos to your site, then to that add categorys, and to those, todoitems.
 
 Work in progress
 ================

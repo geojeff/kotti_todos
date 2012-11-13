@@ -17,7 +17,7 @@
     <table tal_condition="items" class="table table-condensed">
       <thead>
         <tr>
-          <th>Topic</th>
+          <th>Category</th>
           <th># TodoItems</th>
           <th>Most Recent TodoItem</th>
           <th>Creator</th>

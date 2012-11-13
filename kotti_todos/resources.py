@@ -30,20 +30,20 @@ class Todos(Document):
         self.default_view = 'folder-view'
 
 
-class Topic(Document):
+class Category(Document):
     implements(IDocument, IDefaultWorkflow)
 
     id = Column('id', Integer, ForeignKey('documents.id'), primary_key=True)
 
     type_info = Document.type_info.copy(
-        name=u'Topic',
-        title=_(u'Topic'),
-        add_view=u'add_topic',
+        name=u'Category',
+        title=_(u'Category'),
+        add_view=u'add_category',
         addable_to=[u'Todos'],
         )
 
     def __init__(self, **kwargs):
-        super(Topic, self).__init__(**kwargs)
+        super(Category, self).__init__(**kwargs)
 
         self.default_view = 'folder-view'
 
@@ -59,7 +59,7 @@ class TodoItem(Document):
         name=u'TodoItem',
         title=_(u'TodoItem'),
         add_view=u'add_todoitem',
-        addable_to=[u'Topic'],
+        addable_to=[u'Category'],
         )
 
     def __init__(self, **kwargs):

@@ -30,7 +30,7 @@ def kotti_configure(settings):
     settings['kotti.available_types'] += \
             ' kotti_todos.resources.Todos'
     settings['kotti.available_types'] += \
-            ' kotti_todos.resources.Topic'
+            ' kotti_todos.resources.Category'
     settings['kotti.available_types'] += \
             ' kotti_todos.resources.TodoItem'
 
