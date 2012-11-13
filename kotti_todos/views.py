@@ -240,13 +240,18 @@ class TodosView(BaseView):
         items = query.all()
 
         modification_dates_and_items = []
+        done_count = 0
         for item in items:
+            if item.done:
+                done_count += 1
             if item.children:
                 sorted_todoitems = sorted(item.children, 
                                       key=lambda x: x.modification_date,
                                       reverse=True)
                 modification_dates_and_items.append(
-                        (sorted_todoitems[0].modification_date, sorted_todoitems[0], item))
+                        (sorted_todoitems[0].modification_date,
+                         sorted_todoitems[0],
+                         item))
             else:
                 modification_dates_and_items.append(
                         (item.modification_date, item, item))
@@ -266,6 +271,7 @@ class TodosView(BaseView):
             'api': template_api(self.context, self.request),
             'macros': get_renderer('templates/macros.pt').implementation(),
             'items': items,
+            'done_count': done_count,
             'settings': settings,
             }
 

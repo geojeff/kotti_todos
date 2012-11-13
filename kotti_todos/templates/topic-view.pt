@@ -27,8 +27,11 @@
         <tr tal:repeat="item items" class="todoitem">
           <tal:block tal:define="url request.resource_url(item)">
           <td>
-              <a href="${url}">
-                  ${item.title}
+              <a tal_condition="item.done" class="icon-check" href="${url}">
+                 ${item.title}
+              </a>
+              <a tal_condition="not item.done" href="${url}">
+                 ${item.title} <i class="icon-exclamation-sign"></i></small>
               </a>
           </td>
           <td>

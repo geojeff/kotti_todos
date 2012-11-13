@@ -34,7 +34,7 @@
           </td>
           <td>
               <a href="${url}">
-                  ${str(len(item[2].children))}
+                  ${done_count} / ${str(len(item[2].children))}
               </a>
           </td>
           <td>
