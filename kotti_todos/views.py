@@ -242,9 +242,8 @@ class TodosView(BaseView):
         modification_dates_and_items = []
         done_count = 0
         for item in items:
-            if item.done:
-                done_count += 1
             if item.children:
+                done_count += len([1 for c in item.children if c.done])
                 sorted_todoitems = sorted(item.children, 
                                       key=lambda x: x.modification_date,
                                       reverse=True)

@@ -17,8 +17,8 @@
     <table tal_condition="items" class="table table-condensed">
       <thead>
         <tr>
-          <th>TodoItem Title</th>
-          <th>TodoItemer</th>
+          <th>Title</th>
+          <th>Doer</th>
           <th>Creation Date</th>
           <th>Modification Date</th>
         </tr>
@@ -31,7 +31,7 @@
                  ${item.title}
               </a>
               <a tal_condition="not item.done" href="${url}">
-                 ${item.title} <i class="icon-exclamation-sign"></i></small>
+                 ${item.title} <i class="icon-exclamation-sign"></i>
               </a>
           </td>
           <td>

@@ -15,7 +15,7 @@
          Done
       </p>
       <p tal_condition="not api.context.done">
-         Not done <i class="icon-exclamation-sign"></i></small>
+         Not done <i class="icon-exclamation-sign">
       </p>
       <p class="body">
         ${structure: api.context.body}

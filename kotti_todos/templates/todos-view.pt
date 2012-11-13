@@ -18,7 +18,7 @@
       <thead>
         <tr>
           <th>Category</th>
-          <th># TodoItems</th>
+          <th># Completed</th>
           <th>Most Recent TodoItem</th>
           <th>Creator</th>
           <th>Creation Date</th>
