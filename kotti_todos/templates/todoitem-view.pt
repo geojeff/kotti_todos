@@ -12,14 +12,23 @@
         ${api.context.description}
       </p>
       <p class="body">
-        <ul tal:switch="api.context.done">
-          <li tal:case="True">
-            <span><i class="icon-check"></i></span><span>Done</span>
-          </li>
-          <li tal:case="False">
-            <span><i class="icon-exclamation-sign"></i></span><span>Not Done</span>
-          </li>
-        </ul>
+          <p tal:switch="api.context.todostate">
+            <span tal:case="'done'">
+              <i class="icon-check"></i>&nbsp;done
+            </span>
+            <span tal:case="'in progress'">
+              <i class="icon-wrench"></i>&nbsp;in progress
+            </span>
+            <span tal:case="'pending'">
+              <i class="icon-pause"></i>&nbsp;pending
+            </span>
+            <span tal:case="'deferred'">
+              <i class="icon-share"></i>&nbsp;deferred
+            </span>
+            <span tal:case="'abandoned'">
+              <i class="icon-ban-circle"></i>&nbsp;abandoned
+            </span>
+          </p>
         ${structure: api.context.body}
       </p>
     </div>

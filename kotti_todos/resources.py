@@ -2,6 +2,7 @@ from sqlalchemy import Boolean
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
+from sqlalchemy import String
 
 from zope.interface import implements
 
@@ -53,7 +54,7 @@ class TodoItem(Document):
 
     id = Column(Integer, ForeignKey('documents.id'), primary_key=True)
 
-    done = Column('done', Boolean())
+    todostate = Column('todostate', String(1000))
 
     type_info = Document.type_info.copy(
         name=u'TodoItem',
@@ -62,5 +63,7 @@ class TodoItem(Document):
         addable_to=[u'Category'],
         )
 
-    def __init__(self, **kwargs):
+    def __init__(self, todostate="pending", **kwargs):
         super(TodoItem, self).__init__(**kwargs)
+
+        self.todostate = todostate

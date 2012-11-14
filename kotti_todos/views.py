@@ -48,7 +48,18 @@ class CategorySchema(DocumentSchema):
 
 
 class TodoItemSchema(DocumentSchema):
-    pass
+    choices = (('', '- Select -'),
+               ('done', 'done'),
+               ('pending', 'pending'),
+               ('in progress', 'in progress'),
+               ('deferred', 'deferred'),
+               ('abandoned', 'abandoned'))
+    todostate = colander.SchemaNode(
+        colander.String(),
+        default=_(u'in progress'),
+        missing=_(u'in progress'),
+        title=_(u'State'),
+        widget=SelectWidget(values=choices))
 
 
 class AddTodoItemFormView(AddFormView):
@@ -66,14 +77,21 @@ class AddTodoItemFormView(AddFormView):
             description=appstruct['description'],
             body=appstruct['body'],
             tags=appstruct['tags'],
+            todostate=appstruct['todostate'],
             )
 
+def todoitem_validator(form, value):
+    pass
 
+
+#@view_config(name='edit',
+#             context=MediaFile, permission='edit',
+#             renderer='kotti:templates/edit/node.pt')
 class EditTodoItemFormView(EditFormView):
 
     def schema_factory(self):
 
-        return TodoItemSchema()
+        return TodoItemSchema(validator=todoitem_validator)
 
     def edit(self, **appstruct):
 
@@ -88,6 +106,9 @@ class EditTodoItemFormView(EditFormView):
 
         if appstruct['tags']:
             self.context.tags = appstruct['tags']
+
+        if appstruct['todostate']:
+            self.context.todostate = appstruct['todostate']
 
 
 class AddTodosFormView(AddFormView):

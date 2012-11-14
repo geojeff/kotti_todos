@@ -28,32 +28,31 @@
         <tr tal:repeat="item items" class="todoitem">
           <tal:block tal:define="url request.resource_url(item)">
           <td>
-            <ul tal:switch="item.done">
-              <li tal:case="True">
-                 <i class="icon-check"> Done
-              </li>
-              <li tal:case="False">
-                <i class="icon-exclamation-sign">
-              </li>
-            </ul>
+            <p tal:switch="item.todostate">
+              <span tal:case="'done'"><i class="icon-check"></i>&nbsp;done</span>
+              <span tal:case="'in progress'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-wrench"></i>&nbsp;in progress</span>
+              <span tal:case="'pending'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-pause"></i>&nbsp;pending</span>
+              <span tal:case="'deferred'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-share"></i>&nbsp;deferred</span>
+              <span tal:case="'abandoned'">&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-ban-circle"></i>&nbsp;abandoned</span>
+            </p>
           </td>
           <td>
-              <a href="${url}">
+              <a href="${url}@@edit">
                   ${item.title}
               </a>
           </td>
           <td>
-              <a href="${url}">
+              <a href="${url}@@edit">
                   ${item.owner}
               </a>
           </td>
           <td>
-              <a href="${url}">
+              <a href="${url}@@edit">
                   ${api.format_date(item.creation_date)}
               </a>
           </td>
           <td>
-              <a href="${url}">
+              <a href="${url}@@edit">
                   ${api.format_date(item.modification_date)}
               </a>
           </td>
