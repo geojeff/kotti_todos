@@ -189,7 +189,13 @@ class TodoItemView(BaseView):
     @view_config(renderer='kotti_todos:templates/todoitem-view.pt')
     def view(self):
 
-        return {}
+        settings = todos_settings()
+
+        return {
+            'api': template_api(self.context, self.request),
+            'macros': get_renderer('templates/macros.pt').implementation(),
+            'settings': settings,
+            }
 
 
 @view_defaults(context=Category,
