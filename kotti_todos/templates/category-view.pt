@@ -17,6 +17,7 @@
     <table tal_condition="items" class="table table-condensed">
       <thead>
         <tr>
+          <th>Status</th>
           <th>Title</th>
           <th>Doer</th>
           <th>Creation Date</th>
@@ -27,11 +28,18 @@
         <tr tal:repeat="item items" class="todoitem">
           <tal:block tal:define="url request.resource_url(item)">
           <td>
-              <a tal_condition="item.done" class="icon-check" href="${url}">
-                 ${item.title}
-              </a>
-              <a tal_condition="not item.done" href="${url}">
-                 ${item.title} <i class="icon-exclamation-sign"></i>
+            <ul tal:switch="api.context.done">
+              <li tal:case="True">
+                 <i class="icon-check"> Done
+              </li>
+              <li tal:case="False">
+                <i class="icon-exclamation-sign">
+              </li>
+            </ul>
+          </td>
+          <td>
+              <a href="${url}">
+                  ${item.title}
               </a>
           </td>
           <td>
