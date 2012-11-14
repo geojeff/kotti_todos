@@ -28,7 +28,7 @@
         <tr tal:repeat="item items" class="todoitem">
           <tal:block tal:define="url request.resource_url(item)">
           <td>
-            <ul tal:switch="api.context.done">
+            <ul tal:switch="item.done">
               <li tal:case="True">
                  <i class="icon-check"> Done
               </li>

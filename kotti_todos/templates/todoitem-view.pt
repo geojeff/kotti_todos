@@ -9,7 +9,6 @@
     <div class="todoitem" data-uri="${api.url(context)}">
       <h1>${api.context.title}</h1>
       <ul tal:switch="api.context.done">
-        <li>Status:</li>
         <li tal:case="True">
           <i class="icon-check"> Done
         </li>
