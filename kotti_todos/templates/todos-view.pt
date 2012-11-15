@@ -19,7 +19,7 @@
         <tr>
           <th>Category</th>
           <th># Completed</th>
-          <th>Most Recent TodoItem</th>
+          <th>Most Recent Change</th>
           <th>Creator</th>
           <th>Creation Date</th>
         </tr>
