@@ -282,9 +282,11 @@ class TodosView(BaseView):
 
         for item in items:
             if item.children:
+                category_done_count = 0
                 for todo in item.children:
                     if todo.todostate == 'done':
                         todos_data['Done'] += 1
+                        category_done_count += 1
                     if todo.todostate == 'pending':
                         todos_data['Pending'] += 1
                     if todo.todostate == 'in progress':
@@ -302,10 +304,11 @@ class TodosView(BaseView):
                 modification_dates_and_items.append(
                         (sorted_todoitems[0].modification_date,
                          sorted_todoitems[0],
+                         category_done_count,
                          item))
             else:
                 modification_dates_and_items.append(
-                        (item.modification_date, item, item))
+                        (item.modification_date, item, 0, item))
 
         items = sorted(modification_dates_and_items)
 

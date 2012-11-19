@@ -38,15 +38,15 @@
       </thead>
       <tbody>
         <tr tal:repeat="item items" class="todoitem">
-          <tal:block tal:define="url request.resource_url(item[2])">
+          <tal:block tal:define="url request.resource_url(item[3])">
           <td>
               <a href="${url}">
-                  ${item[2].title}
+                  ${item[3].title}
               </a>
           </td>
           <td>
               <a href="${url}">
-                  ${str(todos_data['Total'])} / ${str(len(item[2].children))}
+                  ${str(item[2])} / ${str(len(item[3].children))}
               </a>
           </td>
           <td>
@@ -56,12 +56,12 @@
           </td>
           <td>
               <a href="${url}">
-                  ${item[2].owner}
+                  ${item[3].owner}
               </a>
           </td>
           <td>
               <a href="${url}">
-                  ${api.format_date(item[2].creation_date)}
+                  ${api.format_date(item[3].creation_date)}
               </a>
           </td>
           </tal:block>
