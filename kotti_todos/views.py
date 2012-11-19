@@ -270,12 +270,32 @@ class TodosView(BaseView):
 
         items = query.all()
 
+        todos_data = {}
+        todos_data['Done'] = 0
+        todos_data['Total'] = 0
+        todos_data['Pending'] = 0
+        todos_data['In Progress'] = 0
+        todos_data['Deferred'] = 0
+        todos_data['Abandoned'] = 0
+
         modification_dates_and_items = []
-        done_count = 0
+
         for item in items:
             if item.children:
-                done_count += \
-                    len([1 for c in item.children if c.todostate == 'done'])
+                for todo in item.children:
+                    if todo.todostate == 'done':
+                        todos_data['Done'] += 1
+                    if todo.todostate == 'pending':
+                        todos_data['Pending'] += 1
+                    if todo.todostate == 'in progress':
+                        todos_data['In Progress'] += 1
+                    if todo.todostate == 'Deferred':
+                        todos_data['Deferred'] += 1
+                    if todo.todostate == 'Abandoned':
+                        todos_data['Abandoned'] += 1
+
+                todos_data['Total'] += len(item.children)
+
                 sorted_todoitems = sorted(item.children, 
                                       key=lambda x: x.modification_date,
                                       reverse=True)
@@ -302,7 +322,7 @@ class TodosView(BaseView):
             'api': template_api(self.context, self.request),
             'macros': get_renderer('templates/macros.pt').implementation(),
             'items': items,
-            'done_count': done_count,
+            'todos_data': todos_data,
             'settings': settings,
             }
 

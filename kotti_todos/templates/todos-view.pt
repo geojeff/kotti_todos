@@ -14,6 +14,18 @@
     <p class="body">
       ${structure: api.context.body}
     </p>
+    <div tal:condition="todos_data['Total']"
+         tal:define="keys ['Done', 'Total', 'Pending', 'In Progress', 'Deferred', 'Abandoned']">
+      <ul class="nav nav-pills">
+        <tal:repeat tal:repeat="key keys">
+          <li class='active'>
+            <a href="/">${key}: ${todos_data[key]}</a>
+          </li>
+          <li>&nbsp;</li>
+          <li tal:condition="key == 'Total'">&nbsp;&nbsp;&nbsp;</li>
+        </tal:repeat>
+      </ul>
+    </div>
     <table tal_condition="items" class="table table-condensed">
       <thead>
         <tr>
@@ -34,7 +46,7 @@
           </td>
           <td>
               <a href="${url}">
-                  ${done_count} / ${str(len(item[2].children))}
+                  ${str(todos_data['Total'])} / ${str(len(item[2].children))}
               </a>
           </td>
           <td>
