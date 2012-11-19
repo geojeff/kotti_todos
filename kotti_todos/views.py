@@ -2,6 +2,7 @@ import datetime
 from dateutil.tz import tzutc
 
 from sqlalchemy import func
+from sqlalchemy import desc
 
 import colander
 from colander import Invalid
@@ -229,8 +230,11 @@ class CategoryView(BaseView):
 
         session = DBSession()
 
-        query = session.query(TodoItem).filter(
-                TodoItem.parent_id == self.context.id)
+        query = (session.query(TodoItem)
+                .filter(TodoItem.parent_id == self.context.id)
+                .order_by(TodoItem.todostate)
+                .order_by(TodoItem.modification_date.desc())
+                )
 
         items = query.all()
 
