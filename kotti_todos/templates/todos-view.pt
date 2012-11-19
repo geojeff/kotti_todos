@@ -14,7 +14,7 @@
     <p class="body">
       ${structure: api.context.body}
     </p>
-    <div tal:condition="todos_data['Total']"
+    <div tal:condition="todos_data['Total'] > 0"
          tal:define="keys ['Done', 'Total', 'Pending', 'In Progress', 'Deferred', 'Abandoned']">
       <ul class="nav nav-pills">
         <tal:repeat tal:repeat="key keys">
