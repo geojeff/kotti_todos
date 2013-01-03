@@ -273,8 +273,6 @@ class TodosView(BaseView):
 
         todos_data = {}
         for state in todo_states:
-            print '------'
-            print state
             todos_data[state] = 0
 
         todos_data['total'] = 0
@@ -283,8 +281,11 @@ class TodosView(BaseView):
 
         for item in items:
             if item.children:
+                done_count = 0
                 for todo in item.children:
                     todos_data[todo.todostate] += 1
+                    if todo.todostate == 'done':
+                        done_count += 1
 
                 todos_data['total'] += len(item.children)
 
@@ -295,7 +296,7 @@ class TodosView(BaseView):
                 modification_dates_and_items.append(
                         (sorted_todoitems[0].modification_date,
                          sorted_todoitems[0],
-                         todos_data['done'],
+                         done_count,
                          item))
             else:
                 modification_dates_and_items.append(
