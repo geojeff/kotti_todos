@@ -24,7 +24,7 @@ from kotti_todos.resources import Todos
 from kotti_todos.resources import Category
 from kotti_todos.resources import TodoItem
 from kotti_todos.resources import todo_states
-from kotti_todos.static import kotti_todos_js
+from kotti_todos.fanstatic import kotti_todos_js
 from kotti_todos import _
 
 from kotti.security import has_permission
