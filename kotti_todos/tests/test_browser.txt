@@ -7,16 +7,7 @@ Setup and Login
   >>> import datetime
   >>> from dateutil.tz import tzutc
   >>> from kotti import tests
-  >>> first_time_string = "2012-07-31 05:00:00"
-  >>> first_date = datetime.datetime(2012, 7, 31, 5, 0, 0, tzinfo=tzutc())
-  >>> second_time_string = "2012-07-31 06:00:00"
-  >>> second_date = datetime.datetime(2012, 7, 31, 6, 0, 0, tzinfo=tzutc())
-  >>> third_time_string = "2012-10-04 06:00:00"
-  >>> third_date = datetime.datetime(2012, 10, 4, 6, 0, 0, tzinfo=tzutc())
-  >>> sixth_time_string = "2012-10-07 06:00:00"
-  >>> sixth_date = datetime.datetime(2012, 10, 7, 6, 0, 0, tzinfo=tzutc())
-  >>> eighth_time_string = "2012-10-07 06:00:00"
-  >>> eighth_date = datetime.datetime(2012, 10, 7, 6, 0, 0, tzinfo=tzutc())
+
   >>> def dc(content, name='/tmp/out.html'): open(name, 'w').write(content)
   >>> tools = tests.setUpFunctional(
   ...     **{'kotti.configurators': 'kotti_todos.kotti_configure'})
@@ -32,373 +23,78 @@ Setup and Login
   >>> "Welcome, Administrator" in browser.contents
   True
 
-Add a todos 
--------------------------
+Add a todos list
+----------------
 
   >>> browser.open(tests.BASE_URL + '/@@add_todos')
-  >>> ctrl("Title").value = "New Software Collection"
+  >>> ctrl("Title").value = "Todos"
   >>> ctrl("Body").value = "This is the new todos"
   >>> ctrl("save").click()
   >>> "Successfully added item" in browser.contents
   True
-  >>> browser.url == tests.BASE_URL + '/new-todos/'
+  >>> browser.url == tests.BASE_URL + '/todos/'
   True
 
-Add todoitems
---------------------
+Add todos categories and todoitems
+--------------------------------
 
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "First todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns throwing dice..."
-  >>> ctrl("Use entered date").selected = True
-  >>> ctrl("Date", index=1).value = first_time_string
+  >>> from fixtures import test_todos
+  >>> browser.open(tests.BASE_URL + '/todos/@@add_category')
+  >>> ctrl("Title").value = "Household Tasks"
+  >>> ctrl("Body").value = "Keep the flies at bay..."
   >>> ctrl("save").click()
   >>> "Successfully added item" in browser.contents
   True
 
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Second todoitem"
-  >>> ctrl("Body").value = "This todoitem is about hurricanes..."
-  >>> ctrl("Use entered date").selected = True
-  >>> ctrl("Date", index=1).value = second_time_string
+  >>> browser.open(tests.BASE_URL + '/todos/household-tasks/@@add_todoitem')
+  >>> ctrl("Title").value = "Take out the trash"
+  >>> ctrl("Body").value = "The trash is always full..."
+  >>> ctrl("todostate").value = "pending"
   >>> ctrl("save").click()
   >>> "Successfully added item" in browser.contents
   True
 
-Add a todoitem using pypi source
-----------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/kotti_todos/json"
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = "kotti_todos"
+  >>> from fixtures import test_todos
+  >>> browser.open(tests.BASE_URL + '/todos/@@add_category')
+  >>> ctrl("Title").value = "Home Repair"
+  >>> ctrl("Body").value = "Keep your house from falling down..."
   >>> ctrl("save").click()
   >>> "Successfully added item" in browser.contents
   True
 
-Add a todoitem with GitHub owner but not repo
------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/kotti_todos/json"
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = ""
+  >>> browser.open(tests.BASE_URL + '/todos/home-repair/@@add_todoitem')
+  >>> ctrl("Title").value = "Paint the garage"
+  >>> ctrl("Body").value = "The paint is flaking..."
+  >>> ctrl("todostate").value = "pending"
   >>> ctrl("save").click()
-  >>> "To specifiy a GitHub repo, both owner and repo required" in browser.contents
-  True
-  >>> "Provide GitHub repo for api call" in browser.contents
+  >>> "Successfully added item" in browser.contents
   True
 
-Add a todoitem with GitHub repo but not owner
------------------------------------------------------
+View categories and todoitems
+-----------------------------
 
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/kotti_todos/json"
-  >>> ctrl("GitHub Owner").value = ""
-  >>> ctrl("GitHub Repo").value = "kotti_todos"
-  >>> ctrl("save").click()
-  >>> "To specifiy a GitHub repo, both owner and repo required" in browser.contents
-  True
-  >>> "Provide GitHub owner for api call" in browser.contents
-  True
-
-Add a todoitem with Bitbucket owner but not repo
---------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/kotti_todos/json"
-  >>> ctrl("Bitbucket Owner").value = "geojeff"
-  >>> ctrl("Bitbucket Repo").value = ""
-  >>> ctrl("save").click()
-  >>> "To specifiy a Bitbucket repo, both owner and repo required" in browser.contents
-  True
-  >>> "Provide Bitbucket repo for api call" in browser.contents
-  True
-
-Add a todoitem with Bitbucket repo but not owner
---------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/kotti_todos/json"
-  >>> ctrl("Bitbucket Owner").value = ""
-  >>> ctrl("Bitbucket Repo").value = "kotti_todos"
-  >>> ctrl("save").click()
-  >>> "To specifiy a Bitbucket repo, both owner and repo required" in browser.contents
-  True
-  >>> "Provide Bitbucket owner for api call" in browser.contents
-  True
-
-View todos and todoitem
----------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/')
-  >>> "First todoitem" in browser.contents
-  True
-  >>> "Jul 31, 2012" in browser.contents
+  >>> browser.open(tests.BASE_URL + '/todos/')
+  >>> "Household" in browser.contents
   True
   >>> pos = browser.contents.index
-  >>> pos("Second todoitem") < pos("First todoitem")
+  >>> pos("Household Taks") < pos("Home Repair")
   True
-  >>> browser.getLink("Second todoitem").click()
-  >>> "This todoitem is about hurricanes" in browser.contents
-  True
-
-Add a todoitem with use_pypi_date but no pypi_url
----------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Third todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns lions and tigers..."
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from PyPI, PyPI url required" in browser.contents
-  True
-  >>> "Provide PyPI url for fetching data" in browser.contents
-  True
-
-Add a todoitem with desc to come from pypi, but no pypi_url
--------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Fourth todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns cavemen and alligators..."
-  >>> ctrl("Use description in PyPI data").selected = True
-  >>> ctrl("PyPI URL").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from PyPI, PyPI url required" in browser.contents
-  True
-  >>> "Provide PyPI url for fetching data" in browser.contents
-  True
-
-Add a todoitem with use_github_date but no GitHub owner, repo
----------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Fifth todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns aardvarks and armadillos..."
-  >>> ctrl("Use date in GitHub data").selected = True
-  >>> ctrl("GitHub Owner").value = ""
-  >>> ctrl("GitHub Repo").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from GitHub, owner and repo required" in browser.contents
-  True
-  >>> "Provide GitHub owner for api call" in browser.contents
-  True
-  >>> "Provide GitHub repo for api call" in browser.contents
-  True
-
-Add a todoitem with desc to come from GitHub, but no GitHub owner, repo
--------------------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Sixth todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns architects and lawyers..."
-  >>> ctrl("Use entered date").selected = True
-  >>> ctrl("Date", index=1).value = sixth_time_string
-  >>> ctrl("Use description in GitHub data").selected = True
-  >>> ctrl("GitHub Owner").value = ""
-  >>> ctrl("GitHub Repo").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from GitHub, owner and repo required" in browser.contents
-  True
-  >>> "Provide GitHub owner for api call" in browser.contents
-  True
-  >>> "Provide GitHub repo for api call" in browser.contents
-  True
-
-Add a todoitem with use_bitbucket_date but no Bitbucket owner, repo
----------------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Seventh todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns lizards and frogs..."
-  >>> ctrl("Use date in Bitbucket data").selected = True
-  >>> ctrl("Bitbucket Owner").value = ""
-  >>> ctrl("Bitbucket Repo").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from Bitbucket, owner and repo required" in browser.contents
-  True
-  >>> "Provide Bitbucket owner for api call" in browser.contents
-  True
-  >>> "Provide Bitbucket repo for api call" in browser.contents
-  True
-
-Add a todoitem with desc to come from Bitbucket, but no Bitbucket owner, repo
--------------------------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "Eighth todoitem"
-  >>> ctrl("Body").value = "This todoitem concerns dogs and cats..."
-  >>> ctrl("Use entered date").selected = True
-  >>> ctrl("Date", index=1).value = eighth_time_string
-  >>> ctrl("Use description in Bitbucket data").selected = True
-  >>> ctrl("Bitbucket Owner").value = ""
-  >>> ctrl("Bitbucket Repo").value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from Bitbucket, owner and repo required" in browser.contents
-  True
-  >>> "Provide Bitbucket owner for api call" in browser.contents
-  True
-  >>> "Provide Bitbucket repo for api call" in browser.contents
+  >>> browser.getLink("Home Repair").click()
+  >>> "The paint is flaking" in browser.contents
   True
 
 Edit todos and todoitem and verify the changes
---------------------------------------------------------------------
+----------------------------------------------
 
-  >>> browser.open(tests.BASE_URL + '/new-todos/@@edit')
-  >>> ctrl("Title").value = "This is the Software Collection"
+  >>> browser.open(tests.BASE_URL + '/todos/@@edit')
+  >>> ctrl("Title").value = "This is the Todos list"
   >>> ctrl("Body").value = "Hello, I am a todos"
   >>> ctrl("save").click()
 
   >>> browser.open(tests.BASE_URL + '/new-todos/first-todoitem/@@edit')
   >>> ctrl("Title").value = "I was first, but now am an edited todoitem"
   >>> ctrl("Description", index=0).value = "I am an edited todoitem"
-  >>> ctrl("Tags").value = "dice editing"
-  >>> ctrl("Use entered date").selected = True
-  >>> ctrl("Date", index=1).value = third_time_string
-  >>> ctrl("Home Page URL").value = "http://kotti.pylonsproject.org"
-  >>> ctrl("Docs URL").value = "http://kotti.pylonsproject.org"
-  >>> ctrl("Download URL").value = "http://kotti.pylonsproject.org"
-  >>> ctrl("Bugtracker URL").value = "http://kotti.pylonsproject.org"
+  >>> ctrl("Tags").value = "repair"
   >>> ctrl("save").click()
   >>> "Your changes have been saved" in browser.contents
-  True
-
-Edit a todoitem to change the pypi_url, forcing date to blank
----------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/first-todoitem/@@edit')
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("Date", index=1).value = ""
-  >>> ctrl("PyPI URL").value = "http://pypi.python.org/pypi/Kotti/json"
-  >>> ctrl("save").click()
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/')
-  >>> "Kotti" in browser.contents
-  True
-
-Edit a todoitem with date *and* pypi_url changed
---------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/first-todoitem/@@edit')
-  >>> ctrl("Title").value = "Edited todoitem"
-  >>> ctrl("Use date in PyPI data").selected = True
-  >>> ctrl("PyPI URL", index=0).value = ""
-  >>> ctrl("save").click()
-  >>> "For fetching date or description from PyPI, PyPI url required" in browser.contents
-  True
-  >>> "Provide PyPI url for fetching data" in browser.contents
-  True
-
-Edit a todoitem with GitHub owner and repo changed
-----------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/kotti_todos/@@edit')
-  >>> ctrl("Title").value = "kotti_media"
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = "kotti_media"
-  >>> ctrl("save").click()
-  >>> "kotti_media" in browser.contents
-  True
-
-Edit a todoitem with Bitbucket owner and repo changed
--------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/new-todos/kotti_todos/@@edit')
-  >>> ctrl("Title").value = "sphinx"
-  >>> ctrl("Bitbucket Owner").value = "birkenfeld"
-  >>> ctrl("Bitbucket Repo").value = "sphinx"
-  >>> ctrl("save").click()
-  >>> "sphinx" in browser.contents
-  True
-
-Add a todos with sorting changed
-----------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/@@add_todos')
-  >>> ctrl("Title").value = "Ordered GitHub Software Collection"
-  >>> ctrl("Body").value = "This todos is GitHub only, ascending sorted"
-  >>> ctrl("Ascending").selected = True
-  >>> ctrl("save").click()
-  >>> "Successfully added item" in browser.contents
-  True
-  >>> browser.url == tests.BASE_URL + '/ordered-github-todos/'
-  True
-
-Add GitHub todoitems and one dated NOW; Test for ascending order
-------------------------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/ordered-github-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "GitHub kotti_todos"
-  >>> ctrl("Body").value = "This todoitem is about this very todoitem on GitHub..."
-  >>> ctrl("Use date in GitHub data").selected = True
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = "kotti_todos"
-  >>> ctrl("save").click()
-  >>> "Successfully added item" in browser.contents
-  True
-
-  >>> browser.open(tests.BASE_URL + '/ordered-github-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "GitHub Kotti geojeff fork"
-  >>> ctrl("Body").value = "This todoitem is about Kotti forked on geojeff GitHub..."
-  >>> ctrl("Use date in GitHub data").selected = True
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = "Kotti"
-  >>> ctrl("save").click()
-  >>> "Successfully added item" in browser.contents
-  True
-
-  >>> browser.open(tests.BASE_URL + '/ordered-github-todos/@@add_todoitem')
-  >>> ctrl("Title").value = "kotti_todos dated NOW"
-  >>> ctrl("Body").value = "This todoitem is kotti_todos with a date of NOW..."
-  >>> ctrl("Use current date and time").selected = True
-  >>> ctrl("GitHub Owner").value = "geojeff"
-  >>> ctrl("GitHub Repo").value = "kotti_todos"
-  >>> ctrl("save").click()
-  >>> "Successfully added item" in browser.contents
-  True
-
-  >>> browser.open(tests.BASE_URL + '/ordered-github-todos/')
-  >>> "GitHub Kotti geojeff fork" in browser.contents
-  True
-  >>> "GitHub kotti_todos" in browser.contents
-  True
-  >>> pos = browser.contents.index
-  >>> pos("kotti_todos dated NOW") > pos("GitHub kotti_todos")
-  True
-  >>> pos("kotti_todos dated NOW") > pos("GitHub Kotti geojeff fork")
-  True
-
-Edit the ordered todos to reverse sorting
--------------------------------------------------------
-
-  >>> browser.open(tests.BASE_URL + '/ordered-github-todos/@@edit')
-  >>> ctrl("Title").value = "I was descending, but now am ascending"
-  >>> ctrl("Description").value = "I was descending, but now am ascending"
-  >>> ctrl("Tags").value = "sorting order lists"
-  >>> ctrl("Ascending").selected = True
-  >>> ctrl("Descending").selected = False
-  >>> ctrl("save").click()
-  >>> "I was descending, but now am ascending" in browser.contents
-  True
-  >>> pos = browser.contents.index
-  >>> pos("kotti_todos dated NOW") > pos("GitHub kotti_todos")
-  True
-  >>> pos("kotti_todos dated NOW") > pos("GitHub Kotti geojeff fork")
   True

@@ -12,6 +12,7 @@ from kotti.resources import Document
 
 from kotti_todos import _
 
+todo_states = ['done', 'pending', 'in progress', 'deferred', 'abandoned']
 
 class Todos(Document):
     implements(IDocument, IDefaultWorkflow)

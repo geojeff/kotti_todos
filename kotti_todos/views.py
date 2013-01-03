@@ -23,6 +23,7 @@ from kotti_todos import todos_settings
 from kotti_todos.resources import Todos
 from kotti_todos.resources import Category
 from kotti_todos.resources import TodoItem
+from kotti_todos.resources import todo_states
 from kotti_todos.static import kotti_todos_js
 from kotti_todos import _
 
@@ -271,40 +272,30 @@ class TodosView(BaseView):
         items = query.all()
 
         todos_data = {}
-        todos_data['Done'] = 0
-        todos_data['Total'] = 0
-        todos_data['Pending'] = 0
-        todos_data['In Progress'] = 0
-        todos_data['Deferred'] = 0
-        todos_data['Abandoned'] = 0
+        for state in todo_states:
+            print '------'
+            print state
+            todos_data[state] = 0
+
+        todos_data['total'] = 0
 
         modification_dates_and_items = []
 
         for item in items:
             if item.children:
-                category_done_count = 0
                 for todo in item.children:
-                    if todo.todostate == 'done':
-                        todos_data['Done'] += 1
-                        category_done_count += 1
-                    if todo.todostate == 'pending':
-                        todos_data['Pending'] += 1
-                    if todo.todostate == 'in progress':
-                        todos_data['In Progress'] += 1
-                    if todo.todostate == 'Deferred':
-                        todos_data['Deferred'] += 1
-                    if todo.todostate == 'Abandoned':
-                        todos_data['Abandoned'] += 1
+                    todos_data[todo.todostate] += 1
 
-                todos_data['Total'] += len(item.children)
+                todos_data['total'] += len(item.children)
 
-                sorted_todoitems = sorted(item.children, 
+                sorted_todoitems = sorted(item.children,
                                       key=lambda x: x.modification_date,
                                       reverse=True)
+
                 modification_dates_and_items.append(
                         (sorted_todoitems[0].modification_date,
                          sorted_todoitems[0],
-                         category_done_count,
+                         todos_data['done'],
                          item))
             else:
                 modification_dates_and_items.append(
@@ -326,6 +317,7 @@ class TodosView(BaseView):
             'macros': get_renderer('templates/macros.pt').implementation(),
             'items': items,
             'todos_data': todos_data,
+            'data_keys': todo_states + ['total'],
             'settings': settings,
             }
 

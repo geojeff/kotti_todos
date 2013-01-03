@@ -14,15 +14,14 @@
     <p class="body">
       ${structure: api.context.body}
     </p>
-    <div tal:condition="todos_data['Total'] > 0"
-         tal:define="keys ['Done', 'Total', 'Pending', 'In Progress', 'Deferred', 'Abandoned']">
+    <div tal:condition="todos_data['total'] > 0">
       <ul class="nav nav-pills">
-        <tal:repeat tal:repeat="key keys">
+        <tal:repeat tal:repeat="key data_keys">
+          <li tal:condition="key == 'total'">&nbsp;&nbsp;&nbsp;</li>
           <li class='active'>
-            <a href="/">${key}: ${todos_data[key]}</a>
+            <a href="/">${key.capitalize()}: ${todos_data[key]}</a>
           </li>
           <li>&nbsp;</li>
-          <li tal:condition="key == 'Total'">&nbsp;&nbsp;&nbsp;</li>
         </tal:repeat>
       </ul>
     </div>
